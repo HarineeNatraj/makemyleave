@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import "./Loader.css";
 import { Link } from 'react-router-dom';
 import Logo from '../../Images/logo.png';
-import { Button } from 'react-bootstrap';
 
 
 export class Loader extends Component {
