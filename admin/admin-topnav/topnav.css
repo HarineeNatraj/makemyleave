@@ -1,0 +1,62 @@
+
+.admin-dash-search{
+    background-color: white;
+    width: 442px;
+    height: 42px;
+    border-radius: 49px;
+    margin-left: 50px;
+    outline: none;
+    border: none;
+    padding-left: 15px;
+    transition: all .6s ease-in-out;
+}
+
+.admin-dash-search:focus{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    margin-top: -5px;
+}
+.admin-dash-right-header{
+    display: flex;
+    width: 100%;
+    padding:20px;
+    background-color: #f14668;
+}
+
+.admin-notifi-icon{
+    position: relative;
+    flex: 0.3 1 0%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    color: white;
+    margin-left: 50px;
+}
+
+.admin-name{
+    text-align:center;padding-left:15px;font-weight:100;color:white;padding-top:10px;
+}
+.admin-notifi-size{
+    position: absolute;
+    top: 5px;
+    left: 124px;
+    font-size: 11px;
+    background-color: black;
+    border-radius: 99px;
+    color: white=;
+    width: 16px;
+    height: 16px;
+    text-align: center;
+}
+
+
+.admin-logout{
+     margin-top: 11px;
+        font-size: 1.2rem;
+        margin-left: 10px;
+        color: white;
+        cursor:pointer;
+}
+.admin-logout:hover{
+    color: black;
+}
