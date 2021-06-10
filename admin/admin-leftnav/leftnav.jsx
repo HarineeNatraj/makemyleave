@@ -26,6 +26,14 @@ class Leftnav extends Component {
               <Link style={{textDecoration:"none"}} to="/student_edit"><h2 className="admin-left-main-text">  Add/Remove   </h2></Link>  
             </div>
             <div style={{height:"33px", borderBottom: "1px solid grey",display:"flex",marginBottom:"30px"}}>
+            <i style={{paddingRight:"10px",paddingTop:"3px"}} class="fas fa-edit"></i>  
+              <Link style={{textDecoration:"none"}} to="/attendence"><h2 className="admin-left-main-text"> Attendence</h2></Link>  
+            </div>
+            <div style={{height:"33px", borderBottom: "1px solid grey",display:"flex",marginBottom:"30px"}}>
+            <i style={{paddingRight:"10px",paddingTop:"3px"}} class="admin fas fa-table"></i>  
+              <Link style={{textDecoration:"none"}} to="/admin_time_table"><h2 className="admin-left-main-text">  Time Table </h2></Link>  
+            </div>
+            <div style={{height:"33px", borderBottom: "1px solid grey",display:"flex",marginBottom:"30px"}}>
             <i style={{paddingRight:"10px",paddingTop:"3px"}} class="admin fas fa-user-alt"></i>  
             <Link style={{textDecoration:"none"}} to="/admin_profile"><h2 className="admin-left-main-text"> My Profile</h2></Link>
             </div>

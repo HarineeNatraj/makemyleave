@@ -2,30 +2,32 @@ import React, { Component } from 'react';
 import "./topnav.css";
 import dp from "../../Images/dp-icon.png";
 import axios from 'axios';
+import {Link} from 'react-router-dom';
+
 
 export default class Topnav extends Component {
   state={
     user:{}
+  }
+  logout=()=>{
+    localStorage.setItem('rememberMe', false);
+    localStorage.setItem('name',null);
+    localStorage.setItem('password',null);
+    localStorage.setItem('type',null);
   }
   componentDidMount(){
       const rememberMe = localStorage.getItem('rememberMe') === 'true';
       const name = rememberMe ? localStorage.getItem('name') : '';
       const password = rememberMe ? localStorage.getItem('password') : '';
       const type = rememberMe ? localStorage.getItem('type') : '';
+      const details = rememberMe ? JSON.parse(localStorage.getItem('user_details')) : '';
+      console.log(details);
       if(name && password){
-          axios.post(`${process.env.REACT_APP_APILINK}/get_user_details`,{user_type:type,user_id:name})
-          .then(res=>{
-              // console.log(res.data);
-              this.setState({
-                  user:res.data[0]
-              })
-              console.log(this.state.user);
-              localStorage.setItem('user_details',this.state.user);
-          })
+        this.setState({
+          user:details
+      })
       }
-      else{
-          this.props.history.push("/login");
-      }
+      console.log(this.state.user);
   }
   render() {
     // const name=this.state.user.name;
@@ -44,11 +46,7 @@ color: "grey",cursor:"pointer"}} class="fas fa-search"></i>
 <div style={{flex:0.4,display:"flex",justifyContent:"center"}}>
 <img style={{width:"40px",height:"40px"}} src={dp} alt="dp"/>
 <h6 className="name">{this.state.user.name}</h6>
-<i style={{    marginTop: "15px",
-fontSize: "0.8rem",
-marginLeft: "10px",
-color: "white",cursor:"pointer"
-}} class="fas fa-chevron-down"></i>
+<Link to="/login"><i onClick={this.logout}  class="fa fa-sign-out logout"></i></Link>
 </div>
 <div>
 

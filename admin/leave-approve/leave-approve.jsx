@@ -65,7 +65,7 @@ console.log(this.state.leave);
 
 
 })
-axios.post(`${process.env.REACT_APP_APILINK}/display_leave`,{user_type:"admin",type:"Ordinary",a_id:name,response:"pending"})
+axios.post(`${process.env.REACT_APP_APILINK}/display_leave`,{user_type:"admin",type:"ordinary",a_id:name,response:"pending"})
 .then(res=>{
 res.data.map((ob, index) => {
 this.setState(prevState => ({

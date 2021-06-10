@@ -4,23 +4,39 @@ import Leftnav from '../leftnav/leftnav';
 import pro from "../../Images/blank-image.svg";
 import axios from 'axios';
 import LineChart from '../Graph/Graph';
-import {CircleProgress} from 'react-gradient-progress';
+// import {CircleProgress} from 'react-gradient-progress';
 import loadinggif from "../../Images/1474.gif";
 import l1 from "../../Images/b1.png";
-import IconButton from '@material-ui/core/IconButton';
-import PhotoCamera from '@material-ui/icons/PhotoCamera';
+import './Profile.css';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 class Profile extends Component {
 
 state={
+image:pro,
 hrs:[],
 total_hrs:0,
 loading:false,
 user:{},
 type:null,
-change:null
-
+change:null,
+db:{}
 }
+imageHandler = (e) => {
+  const reader = new FileReader();
+  reader.onload = () =>{
+    if(reader.readyState === 2){
+      this.setState({image: reader.result})
+      axios.post(`${process.env.REACT_APP_APILINK}/check`,{img:this.state.image})
+.then(res=>{
+  console.log(res.data)
+})
+    }
+
+  }
+  reader.readAsDataURL(e.target.files[0])
+};
 handleChange=(e)=>{
   this.setState({
     change:e.target.value
@@ -33,13 +49,21 @@ t[this.state.type]=this.state.change
 this.setState({
   user:t
 })
+const tt=this.state.db
+tt[this.state.type]=this.state.change
+this.setState({
+  db:tt
+})
 // this.state.user[this.state.type]=this.state.change;
 console.log(this.state.user);
 axios.post(`${process.env.REACT_APP_APILINK}/update_details`,this.state.user)
 .then(res=>{
   console.log(res.data);
   if(res.data==="Updated"){
-    window.location.reload(false)
+    localStorage.setItem('user_details',JSON.stringify(this.state.db));
+    toast.success("Profile has been updated Successfully",{
+      position: toast.POSITION.TOP_RIGHT, autoClose:3000});
+      window.location.reload(false)
   }
 })
 
@@ -56,6 +80,10 @@ const rememberMe = localStorage.getItem('rememberMe') === 'true';
 const name = rememberMe ? localStorage.getItem('name') : '';
 const password = rememberMe ? localStorage.getItem('password') : '';
 const type = rememberMe ? localStorage.getItem('type') : '';
+const details = rememberMe ? JSON.parse(localStorage.getItem('user_details')) : '';
+this.setState({
+  db:details
+})
 if(name && password){
 axios.post(`${process.env.REACT_APP_APILINK}/get_user_details`,{user_type:type,user_id:name})
 .then(res=>{
@@ -64,6 +92,7 @@ user:res.data[0]
 })
 console.log(this.state.user );
 })}
+
 axios.post(`${process.env.REACT_APP_APILINK}/sem_wise_leaves`,{s_id:name})
 .then(res=>{
 this.setState({
@@ -108,14 +137,15 @@ return (
             class="far fa-edit" data-toggle="modal" data-target="#exampleModal"></i></p>
         <div
           style={{width:"150px",position:"relative",marginLeft:"45%",height:"150px",borderRadius:"50%",marginTop:"-7%"}}>
-          <img src={pro} style={{borderRadius:"50%",marginTop:"-50px",width:"140px",height:"140px"}} alt="" />
-      <input accept="image/*"  style={{display:"none"}} id="icon-button-file" type="file" />
-      <label htmlFor="icon-button-file">
-        <IconButton color="primary" aria-label="upload picture" component="span">
-          <PhotoCamera />
-        </IconButton>
-      </label>
-          {/* <i style={{cursor:"pointer",position:"absolute",right:"10px",bottom:"59px"}} class="fas fa-2x fa-camera"></i> */}
+          <img src={this.state.image} style={{borderRadius:"50%",marginTop:"-50px",width:"140px",height:"140px"}} alt="" />
+          <input type="file" accept="image/*" name="image-upload-p" id="input-p" onChange={this.imageHandler} />
+                        <div className="label-p">
+                            <label className="image-upload-p" htmlFor="input-p">
+                            <i style={{cursor:"pointer",position:"absolute",right:"10px",bottom:"59px"}} class="fas fa-2x fa-camera"></i>
+                            </label>
+                        </div>
+          
+         
         </div>
         <img style={{width: "50px",
     marginLeft: "49%",
@@ -144,8 +174,10 @@ return (
           door that we do not see the one which has opened for us</p>
         <p style={{textAlign:"center",marginBottom:"0px",marginLeft:"33px",marginTop:"11px",color:"grey"}}>CGPA :
           {this.state.user.cgpa}</p>
-        <button
-          style={{outline:"none",border:"none",backgroundColor:"#5995fd",color:"white",marginLeft:"45%",marginTop:"20px",width:"150px",height:"30px",borderRadius:"49px",marginBottom:"20px"}}>Change
+        <button onClick={()=>{
+            this.handleClick("password")
+          }}
+          style={{outline:"none",border:"none",backgroundColor:"#5995fd",color:"white",marginLeft:"45%",marginTop:"20px",width:"150px",height:"30px",borderRadius:"49px",marginBottom:"20px"}} data-toggle="modal" data-target="#exampleModal">Change
           Password</button>
       </div>
       <div style={{display:"flex"}}>
@@ -159,9 +191,9 @@ return (
             {this.state.total_hrs} activites</h3>
           <p style={{fontSize: "0.7rem",marginLeft:"20px",
     color: "grey"}}>overall progress</p>
-          <CircleProgress percentage={this.state.total_hrs} strokeWidth={10} strokeLinecap={"butt"} fontSize={35}
+          {/* <CircleProgress percentage={this.state.total_hrs} strokeWidth={10} strokeLinecap={"butt"} fontSize={35}
             fontColor={"grey"} primaryColor={["#289672","#9ede73","#d44000","#e2703a","#8c0000","#e40017"]}
-            secondaryColor={"#eeebdd"} />
+            secondaryColor={"#eeebdd"} /> */}
           <div style={{display:"flex"}}>
             <div style={{flex:"0.5",display:"flex"}}>
               <div style={{flex:"0.3",display:"flex",justifyContent:"flex-end",marginRight:"5px",marginTop:"5px"}}>

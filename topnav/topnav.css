@@ -48,3 +48,15 @@
     height: 16px;
     text-align: center;
 }
+
+
+.logout{
+     margin-top: 11px;
+        font-size: 1.2rem;
+        margin-left: 10px;
+        color: white;
+        cursor:pointer;
+}
+.logout:hover{
+    color: black;
+}

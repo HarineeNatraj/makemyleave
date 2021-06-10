@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import Topnav from "../admin-topnav/topnav";
 import Leftnav from '../admin-leftnav/leftnav';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default class Studentedit extends Component {
 state={
@@ -10,20 +12,21 @@ user:{
     u_type:"student",
     s_id:null,
     password:null,
-    cgpa:null,
     dep_id:null,
-    image:null,
+    image:"null",
     b_id:null,
+    cgpa:0,
     curr_sem:null,
-    s1_sgpa:null,
-    s2_sgpa:null,
-    s3_sgpa:null,
-    s4_sgpa:null,
-    s5_sgpa:null,
-    s6_sgpa:null,
-    s7_sgpa:null,
-    s8_sgpa:null,
-    phoneno:null
+    s1_sgpa:"null",
+    s2_sgpa:"null",
+    s3_sgpa:"null",
+    s4_sgpa:"null",
+    s5_sgpa:"null",
+    s6_sgpa:"null",
+    s7_sgpa:"null",
+    s8_sgpa:"null",
+    phoneno:"null",
+    name:null
 }
 
 }
@@ -67,11 +70,62 @@ componentDidMount(){
 }
 
 handleSubmit=(e)=>{
+  this.setState({
+    cgpa:0
+  })
+  if(this.state.user["s1_sgpa"]!=="null"){
+    this.state.user["cgpa"]+=this.state.user["s1_sgpa"]
+  }
+  if(this.state.user["s2_sgpa"]!=="null"){
+    this.state.user["cgpa"]+=this.state.user["s2_sgpa"]
+  }
+  if(this.state.user["s3_sgpa"]!=="null"){
+    this.state.user["cgpa"]+=this.state.user["s3_sgpa"]
+  }
+  if(this.state.user["s4_sgpa"]!=="null"){
+    this.state.user["cgpa"]+=this.state.user["s4_sgpa"]
+  }
+  if(this.state.user["s5_sgpa"]!=="null"){
+    this.state.user["cgpa"]+=this.state.user["s5_sgpa"]
+  }
+  if(this.state.user["s6_sgpa"]!=="null"){
+    this.state.user["cgpa"]+=this.state.user["s6_sgpa"]
+  }
+  if(this.state.user["s7_sgpa"]!=="null"){
+    this.state.user["cgpa"]+=this.state.user["s7_sgpa"]
+  }
+  if(this.state.user["s8_sgpa"]!=="null"){
+    this.state.user["cgpa"]+=this.state.user["s8_sgpa"]
+  }
+  console.log(this.state.user["cgpa"]);
+  this.state.user["cgpa"]=this.state.user["cgpa"]/this.state.user["curr_sem"]
 e.preventDefault();
-axios.put(`${process.env.REACT_APP_APILINK}/add_students`,this.state.user)
+axios.post(`${process.env.REACT_APP_APILINK}/add_students`,this.state.user)
 .then(res=>{
+  console.log(res.data);
     if(res.data==="Inserted"){
-        alert("Student successfuly added")
+      const t=this.state.user
+      t["name"]=null
+      t["s_id"]=null
+      t["b_id"]=null
+      t["cgpa"]=null
+      t["dep_id"]=null
+      t["images"]=null
+      t["curr_sem"]=null
+      t["s1_sgpa"]=null
+      t["s2_sgpa"]=null
+      t["s3_sgpa"]=null
+      t["s4_sgpa"]=null
+      t["s5_sgpa"]=null
+      t["s6_sgpa"]=null
+      t["s7_sgpa"]=null
+      t["s8_sgpa"]=null
+      t["phoneno"]=null
+  this.setState({
+      user:t
+  })
+      toast.success("Student Added Successfully",{
+        position: toast.POSITION.TOP_RIGHT, autoClose:3000});
         const rememberMe = localStorage.getItem('rememberMe') === 'true';
         const name = rememberMe ? localStorage.getItem('name') : '';
     axios.post(`${process.env.REACT_APP_APILINK}/list_students`,{a_id:name})
@@ -92,7 +146,13 @@ axios.put(`${process.env.REACT_APP_APILINK}/add_students`,this.state.user)
 }
 handleChange=(type,value)=>{
     const t=this.state.user
-    t[type]=value
+    if(type==="curr_sem" || type==="s1_sgpa" || type==="s2_sgpa" || type==="s3_sgpa" || type==="s4_sgpa" || type==="s5_sgpa" || type==="s6_sgpa" || type==="s7_sgpa" || type==="s8_sgpa"){
+      console.log(type);
+      t[type]=parseInt(value)
+    }
+    else{
+      t[type]=value
+    }
 this.setState({
     user:t
 })

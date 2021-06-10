@@ -11,11 +11,13 @@ KeyboardTimePicker,
 KeyboardDatePicker,
 } from '@material-ui/pickers';
 import axios from 'axios';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 class LeaveForm extends Component {
 state={
+  r:null,
   ft:null,
   tt:null,
 ftime:null,
@@ -27,16 +29,43 @@ fromDate:null,
 response:null,
 fDate:null,
 toDate:null,
-tDate:null
+tDate:null,
+fday:null,
+tday:null,
+selectedFile:null
 }
+onFileChange = event => {
+    
+  // Update the state
+  this.setState({ selectedFile: event.target.files[0] });
 
+};
+onFileUpload = () => {
+    
+  // Create an object of formData
+  const formData = new FormData();
+
+  // Update the formData object
+  formData.append(
+    "myFile",
+    this.state.selectedFile,
+    this.state.selectedFile.name
+  );
+
+  // Details of the uploaded file
+  console.log(this.state.selectedFile);
+
+  // Request made to the backend api
+  // Send formData object
+  axios.post(`${process.env.REACT_APP_APILINK}/upload_doc`, formData);
+};
 handlereason=(e)=>{
 this.setState({
 response:e.target.value
 })
 }
 componentDidMount(){
-document.getElementById("cat_button").click();
+// document.getElementById("cat_button").click();
 }
 option=(e)=>{
 this.setState({
@@ -74,6 +103,8 @@ handleDateChange=(date)=>{
   console.log(date);
 const t=String(date);
 console.log(t);
+this.state.fday=t.slice(0,3)
+console.log("Day",this.state.day);
 const t1=t.slice(4,15);
 console.log(t1);
 this.setState({
@@ -86,6 +117,7 @@ console.log(this.state.fDate);
 
 handletoChange=(date)=>{
   const t=String(date);
+  this.state.tday=t.slice(0,3)
   this.setState({
     toDate:date
   })
@@ -117,26 +149,47 @@ const t=String(date);
 
 handleSubmit=(e)=>{
 e.preventDefault();
+const rememberMe = localStorage.getItem('rememberMe') === 'true';
+const name = rememberMe ? localStorage.getItem('name') : '';
 console.log(this.state.tt)
 console.log(this.state.ft)
 console.log(this.state.fDate)
 console.log(this.state.tDate)
 console.log(this.state.response)
+const a=null;
+if(this.state.type_name==="Medical Leave"){
+  this.state.r="ML"
+}
+if(this.state.type_name==="Ordinary Leave"){
+  this.state.r="ordinary"
+
+  }
+  if(this.state.type_name==="On-Duty"){
+    this.state.r="OD"
+
+    }
 if(this.state.tt && this.state.ft){
-  console.log("1");
-  axios.post(`${process.env.REACT_APP_APILINK}/`,{fromTime:this.state.ft,fromDate:this.state.fDate})
+  axios.post(`${process.env.REACT_APP_APILINK}/enter_leave`,{s_id:name,type:this.state.r,fromTime:this.state.ft,fromDate:this.state.fDate,toDate:this.state.tDate,toTime:this.state.tt,reason:this.state.response,fday:this.state.fday,tday:this.state.tday})
   .then(res=>{
-    console.log(res.data);
+    if(res.data==="Sent"){
+      toast.success("Leave has been applied successfully",{
+        position: toast.POSITION.TOP_RIGHT, autoClose:3000});
+    }
+    if(res.data==="already"){
+      toast.error("Leave already applied",{
+        position: toast.POSITION.TOP_RIGHT, autoClose:3000});
+    }
   })
 }
 else{
-  axios.post(`${process.env.REACT_APP_APILINK}/`,{fromTime:this.state.fDate})
+  axios.post(`${process.env.REACT_APP_APILINK}/enter_leave`,{s_id:name,type:this.state.r,fromDate:this.state.fDate,toDate:this.state.tDate,reason:this.state.response,fday:this.state.fday,tday:this.state.tday})
   .then(res=>{
     console.log(res.data);
+    alert("Successfully applied")
   })
 }
 }
-
+ 
 
 render() {
 return (
@@ -205,6 +258,14 @@ return (
                       onChange={handleDateChange} KeyboardButtonProps={{
             'aria-label': 'change time',
           }} /> */}
+          <div>
+                <input type="file" onChange={this.onFileChange} />
+                <button 
+                className="header-button"
+                onClick={this.onFileUpload}>
+                  Upload!
+                </button>
+            </div>
                      <button onClick={this.handleSubmit} className="header-button"
               style={{marginLeft:"40%",marginTop:"25px",marginBottom:"15px"}}>Apply Leave</button>
               </Grid>
@@ -246,6 +307,13 @@ return (
             <div>
               <TextField style={{marginTop:"64px",marginLeft:"34%",width:"354px"}} id="outlined-textarea" onChange={this.handlereason}
                 label="Reason for the Leave" placeholder="Type your reason here" multiline variant="outlined" />
+            </div>
+            <div style={{marginTop:"64px",marginLeft:"34%",width:"354px"}}>
+                <input type="file" onChange={this.onFileChange} />
+                <button className="header-button"
+                 onClick={this.onFileUpload}>
+                  Upload!
+                </button>
             </div>
             <button onClick={this.handleSubmit} className="header-button"
               style={{marginLeft:"40%",marginTop:"25px",marginBottom:"15px"}}>Apply Leave</button>

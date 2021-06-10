@@ -4,7 +4,7 @@ import Leftnav from '../admin-leftnav/leftnav';
 import pro from "../../../Images/blank-image.svg";
 import axios from 'axios';
 import LineChart from '../../Graph/Graph';
-import {CircleProgress} from 'react-gradient-progress';
+// import {CircleProgress} from 'react-gradient-progress';
 import loadinggif from "../../../Images/1474.gif";
 import l1 from "../../../Images/l1.png"
 
@@ -17,9 +17,25 @@ total_hrs:0,
 loading:false,
 user:{},
 type:null,
-change:null
-
+change:null,
+image:pro
 }
+
+imageHandler = (e) => {
+  const reader = new FileReader();
+  reader.onload = () =>{
+    if(reader.readyState === 2){
+      this.setState({image: reader.result})
+      axios.post(`${process.env.REACT_APP_APILINK}/check`,{img:this.state.image})
+.then(res=>{
+  console.log(res.data)
+})
+    }
+
+  }
+  reader.readAsDataURL(e.target.files[0])
+};
+
 handleChange=(e)=>{
   this.setState({
     change:e.target.value
@@ -107,9 +123,14 @@ return (
             class="far fa-edit" data-toggle="modal" data-target="#exampleModal"></i></p>
         <div
           style={{width:"150px",position:"relative",marginLeft:"45%",height:"150px",borderRadius:"50%",marginTop:"-7%"}}>
-          <img src={pro} style={{borderRadius:"50%",marginTop:"-50px",width:"140px",height:"140px"}} alt="" />
-          <i style={{cursor:"pointer",position:"absolute",right:"10px",bottom:"59px"}} class="fas fa-2x fa-camera"></i>
-        </div>
+          <img src={this.state.image} style={{borderRadius:"50%",marginTop:"-50px",width:"140px",height:"140px"}} alt="" />
+          <input type="file" accept="image/*" name="image-upload-p" id="input-p" onChange={this.imageHandler} />
+                        <div className="label-p">
+                            <label className="image-upload-p" htmlFor="input-p">
+                            <i style={{cursor:"pointer",position:"absolute",right:"10px",bottom:"59px"}} class="fas fa-2x fa-camera"></i>
+                            </label>
+                        </div>
+           </div>
         <img style={{width: "50px",
     marginLeft: "49%",
     marginBottom: "38px"}} src={l1} alt="" />
@@ -152,9 +173,9 @@ return (
             {this.state.total_hrs} activites</h3>
           <p style={{fontSize: "0.7rem",marginLeft:"20px",
     color: "grey"}}>overall progress</p>
-          <CircleProgress percentage={this.state.total_hrs} strokeWidth={10} strokeLinecap={"butt"} fontSize={35}
+          {/* <CircleProgress percentage={this.state.total_hrs} strokeWidth={10} strokeLinecap={"butt"} fontSize={35}
             fontColor={"grey"} primaryColor={["#289672","#9ede73","#d44000","#e2703a","#8c0000","#e40017"]}
-            secondaryColor={"#eeebdd"} />
+            secondaryColor={"#eeebdd"} /> */}
           <div style={{display:"flex"}}>
             <div style={{flex:"0.5",display:"flex"}}>
               <div style={{flex:"0.3",display:"flex",justifyContent:"flex-end",marginRight:"5px",marginTop:"5px"}}>

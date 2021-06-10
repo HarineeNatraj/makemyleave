@@ -1,5 +1,5 @@
 import React from 'react';
-import {Line,Chart} from 'react-chartjs-2';
+import {Line,Chart,Bar} from 'react-chartjs-2';
 
 
 
@@ -29,7 +29,7 @@ export default class App extends React.Component {
       gradient.addColorStop(1, '#eeeeee');
 
       return {
-          labels: ['Sem 1','Sem 2','Sem 3','Sem 4','Sem 5','Sem 6','Sem 7','Sem 8'],
+          labels: this.props.xaxis,
           datasets: [
               {
                 label:this.props.label,
@@ -101,7 +101,7 @@ export default class App extends React.Component {
                yAxes: [{
                  ticks:{
                   max:10,
-                  min:5,
+                  min:this.props.min,
                   step:2,
                    fontColor: 'grey',
                    display:false

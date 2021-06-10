@@ -16,21 +16,18 @@ export default class Topnav extends Component {
     localStorage.setItem('type',null);
   }
   componentDidMount(){
-      const rememberMe = localStorage.getItem('rememberMe') === 'true';
-      const name = rememberMe ? localStorage.getItem('name') : '';
-      const password = rememberMe ? localStorage.getItem('password') : '';
-      const type = rememberMe ? localStorage.getItem('type') : '';
-      if(name && password){
-          axios.post(`${process.env.REACT_APP_APILINK}/get_user_details`,{user_type:type,user_id:name})
-          .then(res=>{
-              // console.log(res.data);
-              this.setState({
-                  user:res.data[0]
-              })
-              console.log(this.state.user);
-              localStorage.setItem('user_details',this.state.user);
-          })
-      }
+    const rememberMe = localStorage.getItem('rememberMe') === 'true';
+    const name = rememberMe ? localStorage.getItem('name') : '';
+    const password = rememberMe ? localStorage.getItem('password') : '';
+    const type = rememberMe ? localStorage.getItem('type') : '';
+    const details = rememberMe ? JSON.parse(localStorage.getItem('user_details')) : '';
+    console.log(details);
+    if(name && password){
+      this.setState({
+        user:details
+    })
+    }
+    console.log(this.state.user);
   }
   render() {
     // const name=this.state.user.name;

@@ -23,7 +23,7 @@ class Leftnav extends Component {
             </div> */}
             <div style={{height:"33px", borderBottom: "1px solid grey",display:"flex",marginBottom:"30px"}}>
             <i style={{paddingRight:"10px",paddingTop:"3px"}} class="fas fa-user-alt"></i>  
-            <h2 className="left-main-text"> My Profile</h2>
+            <Link style={{textDecoration:"none"}} to="/my_profile"><h2 className="left-main-text"> My Profile</h2></Link>
             </div>
             <div style={{height:"33px", borderBottom: "1px solid grey",display:"flex",marginBottom:"30px"}}>
             <i style={{paddingRight:"10px",paddingTop:"3px"}} class="fas fa-table"></i>  
@@ -34,8 +34,12 @@ class Leftnav extends Component {
             <Link style={{textDecoration:"none"}} to="/apply_leave"><h2 className="left-main-text"> Apply Leave   </h2></Link>
             </div>
             <div style={{height:"33px", borderBottom: "1px solid grey",display:"flex",marginBottom:"30px"}}>
+            <i style={{paddingRight:"10px",paddingTop:"3px"}} class="fas fa-sign-out-alt"></i> 
+            <Link style={{textDecoration:"none"}} to="/recent_activity"><h2 className="left-main-text"> Recent Activity   </h2></Link>
+            </div>
+            <div style={{height:"33px", borderBottom: "1px solid grey",display:"flex",marginBottom:"30px"}}>
             <i style={{paddingRight:"10px",paddingTop:"3px"}} class="fas fa-phone-alt"></i>  
-                <h2 className="left-main-text">  Contact Us  </h2>
+              <Link style={{textDecoration:"none"}} to="/contact_us_make_my_leave"><h2 className="left-main-text">  Contact Us  </h2></Link>  
             </div>
             <img style={{width:"182px",height:"182px"}} src={panel} alt=""/>
         </div>
