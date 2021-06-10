@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './contact.css';
 import Leftnav from '../leftnav/leftnav';
 import Topnav from '../topnav/topnav';
-
+   
 
 class Contact extends React.Component{
   state={
