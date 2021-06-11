@@ -7,7 +7,14 @@ import axios from 'axios';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import l1 from "../../Images/l1.png"
-import b1 from "../../Images/b1.png"
+import b1 from "../../Images/b1.png";
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
   }
@@ -19,7 +26,10 @@ export default class Login extends Component {
         password:"",
         flag:"",
         content:"",
-        type:""
+        type:"",
+        rememberMe:false,
+        user:{},
+        t:null
     }
     onChangename=(e)=>{
 this.setState({
@@ -53,33 +63,50 @@ container.classList.add("log-in-mode");
             name:this.state.name,
             password:this.state.password
         }
-        axios.post(`http://b2bd9965ee34.ngrok.io/`, { user })
+        axios.post(`${process.env.REACT_APP_APILINK}`, { user })
       .then(res => {
           console.log(res.data);
         this.setState({
-            flag:true
+            flag:res.data.flag
         })
-        console.log(res.data.flag);
+        console.log(res.data.type);
         if(res.data.flag){
-this.setState({
-    content:"Successfull login"
-})
-this.setState({
-    type:"success"
-})
+            this.setState({
+                t:res.data.type
+            })
+    localStorage.setItem('rememberMe', true);
+    localStorage.setItem('name',this.state.name);
+    localStorage.setItem('password',this.state.password);
+    localStorage.setItem('type',res.data.type);
+    axios.post(`${process.env.REACT_APP_APILINK}/get_user_details`,{user_type:res.data.type,user_id:this.state.name})
+    .then(res=>{
+        localStorage.setItem('user_details',JSON.stringify(res.data[0]));
+        toast.success("Login Successfull :)",{
+            position: toast.POSITION.TOP_CENTER, autoClose:3000});
+            console.log("ttt",this.state.t);
+        if(this.state.t==="student"){
+            this.props.history.push("/student_home");
         }
         else{
-            this.setState({
-                content:"Authentication failed"
-            })
-            this.setState({
-                type:"error"
-            })
+            this.props.history.push("/admin_home");
+        
+        }
+    })
+
+
+        }
+        else{
+            toast.error("Authentication Failed :: Check your credentials",{
+                position: toast.POSITION.TOP_CENTER, autoClose:3000});
         }
 
       })
+      .catch(err => {
+        toast.error("Network Error :: Please check the network connection",{
+            position: toast.POSITION.TOP_CENTER, autoClose:3000});
 
-    }
+    })
+}
     admin_log_in=e=>{
         e.preventDefault();
         const container=document.querySelector(".login-container");
@@ -95,6 +122,39 @@ this.setState({
             }
         )
     }
+    handleremember=()=>{
+        this.setState(
+            {
+                rememberMe:!this.state.rememberMe
+            }
+        )
+    }
+    componentDidMount(){
+        const rememberMe = localStorage.getItem('rememberMe') === 'true';
+  const name = rememberMe ? localStorage.getItem('name') : '';
+  const password = rememberMe ? localStorage.getItem('password') : '';
+  const type = rememberMe ? localStorage.getItem('type') : '';
+  const user={
+    name:this.state.name,
+    password:this.state.password
+}
+  if(name && password){
+    axios.post(`${process.env.REACT_APP_APILINK}`, { user })
+    .then(res => {
+        console.log(res.data);
+      this.setState({
+          flag:res.data.flag
+      })
+      if(type==="student"){
+        this.props.history.push("/student_home");
+    }
+    else{
+        this.props.history.push("/admin_home");
+    
+    }
+  })
+    }
+}
 render() {
 return (
 <div>
@@ -117,6 +177,10 @@ return (
                         <i className="fas fa-lock"></i>
                         <input type="password" onChange={this.onChangepass} placeholder="Password" autoComplete="off" />
                     </div>
+                    <FormControlLabel
+        control={<Checkbox  onChange={this.handleremember} name="admin-remember"  color="primary" />}
+        label="Remember Me"
+      />
                     <input type="submit" value="Sign In" onClick={this.handlesubmit}  className="login-btn solid" id="sign-in-btn" />
                     <Link  data-toggle="modal" data-target="#exampleModalCenter">Forgot Password</Link>
                     <p className="login-social-text" style={{color:"#c0c0c0"}}>© MakeMyLeave</p>
@@ -132,6 +196,10 @@ return (
                         <i className="fas fa-lock"></i>
                         <input type="password" onChange={this.onChangepass} placeholder="Password" autoComplete="off" />
                     </div>
+                    <FormControlLabel
+        control={<Checkbox  onChange={this.handleremember} name="admin-remember" />}
+        label="Remember Me"
+      />
                     <input type="submit" value="Sign in" onClick={this.handlesubmit} className="login-btn1 solid" id="log-in-btn" />
                     <Link style={{color:"#f14666"}} data-toggle="modal" data-target="#exampleModalCenter">Forgot Password</Link>
                     <p className="login-social-text" style={{color:"#c0c0c0"}}>© MakeMyLeave</p>

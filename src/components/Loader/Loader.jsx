@@ -2,13 +2,30 @@ import React, { Component } from 'react'
 import "./Loader.css";
 import { Link } from 'react-router-dom';
 import Logo from '../../Images/logo.png';
-
+import axios from 'axios';
 
 export class Loader extends Component {
     state={
         timer:0
     }
     componentDidMount = () => {
+        const rememberMe=localStorage.getItem('rememberMe')==='True';
+        console.log(rememberMe);
+        if(rememberMe){
+            const user=localStorage.getItem('user');
+            axios.post(`${process.env.REACT_APP_APILINK}`, { user })
+            .then(res=>{
+                if(res.data.flag){
+                    if(res.data.type==="student"){
+                        this.props.history.push("/student_home");
+                    }
+                    else{
+                        this.props.history.push("/admin_home");
+                    
+                    }
+                }
+            })
+        }
       this.interval=setInterval(() => {
           if(this.state.timer>3){
 clearInterval(this.interval)

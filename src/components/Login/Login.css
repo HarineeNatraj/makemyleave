@@ -561,3 +561,7 @@ form.login-log-in-form {
   padding-top: 6px;
   font-size: 1.5rem; 
 }
+
+.MuiTypography-body1 {
+  margin-top: 8px !important;
+}
