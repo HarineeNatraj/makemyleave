@@ -1,8 +1,6 @@
 import React from 'react';
 import {Line,Chart,Bar} from 'react-chartjs-2';
 
-
-
 export default class App extends React.Component {
   render() {
     let draw = Chart.controllers.line.prototype.draw;
