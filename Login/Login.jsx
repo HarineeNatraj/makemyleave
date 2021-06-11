@@ -73,7 +73,6 @@ container.classList.add("log-in-mode");
         if(res.data.flag){
             toast.success("Login Successfull :)",{
                 position: toast.POSITION.TOP_CENTER, autoClose:3000});
-if(this.state.rememberMe){
     localStorage.setItem('rememberMe', this.state.rememberMe);
     localStorage.setItem('name',this.state.name);
     localStorage.setItem('password',this.state.password);
@@ -82,7 +81,7 @@ if(this.state.rememberMe){
     .then(res=>{
         localStorage.setItem('user_details',JSON.stringify(res.data[0]));
     })
-}
+
 if(res.data.type==="student"){
     this.props.history.push("/student_home");
 }

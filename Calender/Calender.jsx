@@ -30,7 +30,7 @@ export default class Cal extends Component {
             <Inject services={[Week,Month]} />
         </ScheduleComponent>
         
-</div> 
+</div>
         </div>
        
     );
