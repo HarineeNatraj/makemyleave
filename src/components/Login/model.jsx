@@ -49,7 +49,7 @@ const user={
     username:this.state.roll
 }
 console.log(this.state.roll);
-axios.post(`http://b2bd9965ee34.ngrok.io/User_details`, { user })
+axios.post(`${process.env.REACT_APP_APILINK}User_details`, { user })
 .then(res => {
     console.log(res.data);
     const t=res.data.flag;
@@ -93,7 +93,7 @@ axios.post(`http://b2bd9965ee34.ngrok.io/User_details`, { user })
         const user={
             otp:this.state.otp
         }
-        axios.post(`http://b2bd9965ee34.ngrok.io/otp`, { user })
+        axios.post(`${process.env.REACT_APP_APILINK}otp`, { user })
 .then(res => {
     console.log(res.data);
     if(res.data.flag){
@@ -132,7 +132,7 @@ const user={
     password:this.state.password,
     repassword:this.state.reenter
 }
-axios.post(`http://b2bd9965ee34.ngrok.io/change_credentials`, { user })
+axios.post(`${process.env.REACT_APP_APILINK}change_credentials`, { user })
 .then(res => {
     console.log(res.data);
     if(res.data.flag){
