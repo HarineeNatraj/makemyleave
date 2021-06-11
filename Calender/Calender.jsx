@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {Inject,ScheduleComponent,Day,Week,WorkWeek,Month,Agenda,ViewsDirective, ViewDirective} from '@syncfusion/ej2-react-schedule';
-
+  
 import "../../../node_modules/@syncfusion/ej2-base/styles/material.css";
 import "../../../node_modules/@syncfusion/ej2-buttons/styles/material.css";
 import "../../../node_modules/@syncfusion/ej2-calendars/styles/material.css";
