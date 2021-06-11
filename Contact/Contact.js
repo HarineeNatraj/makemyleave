@@ -19,7 +19,7 @@ class Contact extends React.Component{
             <main class="main">
             <div class="background">
             <Topnav />
-                <h1 style={{textAlign:"center",fontWeight:"300", textShadow: "2px 2px 4px #000000"}}>Feel Free to contact us.!</h1>
+                <h1 style={{textAlign:"center",fontWeight:"300", textShadow: "2px 2px 4px #000000"}}>Please Feel Free to contact us.!</h1>
   <div class="con">
     <div class="screen">
       <div class="screen-header">
