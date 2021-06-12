@@ -6,7 +6,7 @@ import Leftnav from '../leftnav/leftnav';
 // import {CircleProgress} from 'react-gradient-progress';
 import {CalendarComponent} from '@syncfusion/ej2-react-calendars';
 import axios from 'axios';
-import loadinggif from "../../Images/1474.gif";
+import loadinggif from "../../Images/1474.gif";  
 
 
 
